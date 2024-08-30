@@ -26,11 +26,11 @@ public class ProductServiceIMPL implements ProductService {
 
     @Override
     public void save(ProductDto productDto) {
-        productRepository.save(modelMapper.map(productDto, Product.class));
+//        productRepository.save(modelMapper.map(productDto, Product.class));
     }
-
     @Override
     public void update(ProductDto productDto) {
+        System.out.println(productDto);
         Product product = modelMapper.map(productDto, Product.class);
         Optional<Product> byId = productRepository.findById(product.getId());
         if (byId.isPresent()) {
@@ -39,6 +39,7 @@ public class ProductServiceIMPL implements ProductService {
             existingProduct.setImgBase64(product.getImgBase64());
             existingProduct.setDescription(product.getDescription());
             existingProduct.setDetails(product.getDetails());
+            System.out.println("\n\n\n\n"+existingProduct);
             productRepository.save(existingProduct);
         }
     }
@@ -62,4 +63,8 @@ public class ProductServiceIMPL implements ProductService {
         return products.stream().map(product -> modelMapper.map(products,ProductDto.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public Product saveProduct(ProductDto productDto) {
+       return productRepository.save(modelMapper.map(productDto, Product.class));
+    }
 }

@@ -1,7 +1,9 @@
 package com.sc_graghics.sc_graphic.controller;
 
 import com.sc_graghics.sc_graphic.dto.ProductDto;
+import com.sc_graghics.sc_graphic.entity.Product;
 import com.sc_graghics.sc_graphic.service.custom.ProductService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +17,20 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private final ModelMapper modelMapper;
+
+    public ProductController(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     @PostMapping()
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-        productService.save(productDto);
-        return ResponseEntity.ok(productDto);
+        Product product = productService.saveProduct(productDto);
+        return ResponseEntity.ok(modelMapper.map(product, productDto.getClass()));
     }
 
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<ProductDto>> getAllProducts() {
         List<ProductDto> products = productService.findAll();
         return ResponseEntity.ok(products);
