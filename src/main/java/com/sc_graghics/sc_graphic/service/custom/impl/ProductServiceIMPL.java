@@ -73,17 +73,23 @@ public class ProductServiceIMPL implements ProductService {
     @Override
     public Product saveProduct(ProductDto productDto) {
         if (productDto.getImageData() != null && productDto.getImageData().startsWith("data:image")) {
-            // Strip the base64 image prefix and decode the image
-            String base64Image = productDto.getImageData().substring(productDto.getImageData().indexOf(",") + 1);
-            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
-            productDto.setImg(imageBytes);
+            String base64Image = productDto.getImageData().split(",", 2)[1];
+            try {
+                byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+                productDto.setImg(imageBytes);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid base64 image data", e);
+            }
         } else if (productDto.getImg() != null) {
-            // Handle if `img` is directly passed as a byte array
             productDto.setImg(productDto.getImg());
+        } else {
+            productDto.setImg(null);
         }
-        System.out.println("\n\n\n\n"+productDto);
+
         Product product = modelMapper.map(productDto, Product.class);
-        System.out.println("\n\n\n\n"+product);
+
         return productRepository.save(product);
     }
+
+
 }

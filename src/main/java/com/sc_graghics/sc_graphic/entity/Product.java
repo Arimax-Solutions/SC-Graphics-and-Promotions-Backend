@@ -17,6 +17,7 @@ public class Product {
     private Integer id;
     private String title;
     @Lob
+    @Column(length = 1024)
     private byte[] img;
     private Double price;
     private String description;
