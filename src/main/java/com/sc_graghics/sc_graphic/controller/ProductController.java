@@ -26,13 +26,15 @@ public class ProductController {
 
     @PostMapping()
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+        System.out.println("\n\n\n\n"+productDto);
         Product product = productService.saveProduct(productDto);
         return ResponseEntity.ok(modelMapper.map(product, productDto.getClass()));
     }
 
+
     @GetMapping()
-    public ResponseEntity<List<ProductDto>> getAllProducts() {
-        List<ProductDto> products = productService.findAll();
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.findAllProduct();
         return ResponseEntity.ok(products);
     }
 

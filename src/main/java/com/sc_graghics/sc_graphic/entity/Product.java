@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.BitSet;
 import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +16,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private String imgBase64;
+    @Lob
+    private byte[] img;
     private Double price;
     private String description;
     @ElementCollection

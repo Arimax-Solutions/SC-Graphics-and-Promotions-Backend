@@ -8,9 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceIMPL implements ProductService {
@@ -28,6 +28,7 @@ public class ProductServiceIMPL implements ProductService {
     public void save(ProductDto productDto) {
 //        productRepository.save(modelMapper.map(productDto, Product.class));
     }
+
     @Override
     public void update(ProductDto productDto) {
         System.out.println(productDto);
@@ -36,10 +37,10 @@ public class ProductServiceIMPL implements ProductService {
         if (byId.isPresent()) {
             Product existingProduct = byId.get();
             existingProduct.setTitle(product.getTitle());
-            existingProduct.setImgBase64(product.getImgBase64());
+            existingProduct.setImg(product.getImg());
             existingProduct.setDescription(product.getDescription());
             existingProduct.setDetails(product.getDetails());
-            System.out.println("\n\n\n\n"+existingProduct);
+            System.out.println("\n\n\n\n" + existingProduct);
             productRepository.save(existingProduct);
         }
     }
@@ -59,12 +60,30 @@ public class ProductServiceIMPL implements ProductService {
 
     @Override
     public List<ProductDto> findAll() {
-        List<Product> products = productRepository.findAll();
-        return products.stream().map(product -> modelMapper.map(products,ProductDto.class)).collect(Collectors.toList());
+//       return productRepository.findAll();
+        return null;
+    }
+
+    @Override
+    public List<Product> findAllProduct() {
+        return productRepository.findAll();
+
     }
 
     @Override
     public Product saveProduct(ProductDto productDto) {
-       return productRepository.save(modelMapper.map(productDto, Product.class));
+        if (productDto.getImageData() != null && productDto.getImageData().startsWith("data:image")) {
+            // Strip the base64 image prefix and decode the image
+            String base64Image = productDto.getImageData().substring(productDto.getImageData().indexOf(",") + 1);
+            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+            productDto.setImg(imageBytes);
+        } else if (productDto.getImg() != null) {
+            // Handle if `img` is directly passed as a byte array
+            productDto.setImg(productDto.getImg());
+        }
+        System.out.println("\n\n\n\n"+productDto);
+        Product product = modelMapper.map(productDto, Product.class);
+        System.out.println("\n\n\n\n"+product);
+        return productRepository.save(product);
     }
 }
