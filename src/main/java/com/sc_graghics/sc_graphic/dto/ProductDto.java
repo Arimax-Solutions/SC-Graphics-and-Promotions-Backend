@@ -1,4 +1,6 @@
 package com.sc_graghics.sc_graphic.dto;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.sc_graghics.sc_graphic.util.Base64ImageDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +16,10 @@ public class ProductDto {
     private Integer id;
     private String title;
     private String imageData;
+
+    @JsonDeserialize(using = Base64ImageDeserializer.class)
     private byte[] img;
+
     private Double price;
     private String description;
     private List<ProductDetailsDto> details;
