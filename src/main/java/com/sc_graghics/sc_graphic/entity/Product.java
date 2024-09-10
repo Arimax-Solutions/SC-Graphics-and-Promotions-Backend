@@ -17,8 +17,10 @@ public class Product {
     private Integer id;
     private String title;
     @Lob
-    @Column(length = 1024)
+    @Column(columnDefinition = "LONGBLOB")  // Use BLOB or LONGBLOB based on your needs
     private byte[] img;
+    private String category;
+    private String subcategory;
     private Double price;
     private String description;
     @ElementCollection
