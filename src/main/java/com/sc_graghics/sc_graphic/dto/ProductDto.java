@@ -21,5 +21,6 @@ public class ProductDto {
     private Double price;
     private String description;
     private String darazLink;
+    private int clickCount;
     private List<ProductDetailsDto> details;
 }

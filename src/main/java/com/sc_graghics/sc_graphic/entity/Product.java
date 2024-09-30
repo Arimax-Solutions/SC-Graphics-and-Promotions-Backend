@@ -22,6 +22,7 @@ public class Product {
     private Double price;
     private String description;
     private String darazLink;
+    private int clickCount;
     @ElementCollection
     private List<ProductDetails> details;
 

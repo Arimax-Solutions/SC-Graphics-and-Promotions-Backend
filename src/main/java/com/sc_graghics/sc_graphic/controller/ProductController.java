@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sc_graghics.sc_graphic.dto.ProductDto;
 import com.sc_graghics.sc_graphic.entity.Product;
 import com.sc_graghics.sc_graphic.service.custom.ProductService;
+import com.sc_graghics.sc_graphic.service.custom.impl.ProductServiceIMPL;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductServiceIMPL productServiceIMPL;
 
     @Autowired
     private final ModelMapper modelMapper;
@@ -76,5 +81,27 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @PostMapping("click/count/{id}")
+    public ResponseEntity<Void> recordClick(@PathVariable Integer id) {
+        try {
+            // Call the service method to increment the click count
+            productServiceIMPL.incrementProductClickCount(id);
+            System.out.println("Click recorded for product ID: " + id);
+            return ResponseEntity.ok().build(); // Respond with 200 OK
+        } catch (Exception e) {
+            System.err.println("Error recording click for product ID: " + id + " - " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+    // API to get the most popular products
+    @GetMapping("/popular")
+    public ResponseEntity<List<ProductDto>> getPopularProducts() {
+        List<ProductDto> popularProducts = productServiceIMPL.getMostPopularProducts();
+        return ResponseEntity.ok(popularProducts);
     }
 }
