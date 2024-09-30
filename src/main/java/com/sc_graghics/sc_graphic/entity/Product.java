@@ -21,6 +21,7 @@ public class Product {
     private String subcategory;
     private Double price;
     private String description;
+    private String darazLink;
     @ElementCollection
     private List<ProductDetails> details;
 

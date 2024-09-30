@@ -20,5 +20,6 @@ public class ProductDto {
     private String subcategory;
     private Double price;
     private String description;
+    private String darazLink;
     private List<ProductDetailsDto> details;
 }

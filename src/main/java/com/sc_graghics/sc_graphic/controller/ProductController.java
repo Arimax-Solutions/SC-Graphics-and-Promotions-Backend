@@ -33,7 +33,7 @@ public class ProductController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductDto> createProduct(
             @RequestPart("product") String productJson,
-            @RequestPart("image") MultipartFile imageFile) throws JsonProcessingException {
+            @RequestPart("img") MultipartFile imageFile) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
         Product product = productService.saveProduct(productDto, imageFile);
