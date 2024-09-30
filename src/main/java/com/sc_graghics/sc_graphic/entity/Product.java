@@ -16,9 +16,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")  // Use BLOB or LONGBLOB based on your needs
-    private byte[] img;
+    private String img;
     private String category;
     private String subcategory;
     private Double price;

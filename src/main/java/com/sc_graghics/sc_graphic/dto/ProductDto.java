@@ -15,10 +15,7 @@ public class ProductDto {
 
     private Integer id;
     private String title;
-    private String imageData;
-
-    @JsonDeserialize(using = Base64ImageDeserializer.class)
-    private byte[] img;
+    private String img;
     private String category;
     private String subcategory;
     private Double price;
