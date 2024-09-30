@@ -4,6 +4,7 @@ import com.sc_graghics.sc_graphic.dto.ProductDto;
 import com.sc_graghics.sc_graphic.entity.Product;
 import com.sc_graghics.sc_graphic.repo.ProductRepository;
 import com.sc_graghics.sc_graphic.service.custom.ProductService;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -135,5 +136,23 @@ public class ProductServiceIMPL implements ProductService {
             fos.write(file.getBytes());
         }
         return convFile;
+    }
+
+    public void incrementProductClickCount(Integer id) {
+        Optional<Product> productOpt = productRepository.findById(id);
+        if (productOpt.isPresent()) {
+            Product product = productOpt.get();
+            product.setClickCount(product.getClickCount() + 1);
+            productRepository.save(product);
+        } else {
+            throw new EntityNotFoundException("Product not found with ID: " + id);
+        }
+    }
+
+    public List<ProductDto> getMostPopularProducts() {
+        List<Product> popularProducts = productRepository.findTop16ByOrderByClickCountDesc();
+        return popularProducts.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class))
+                .toList();
     }
 }
