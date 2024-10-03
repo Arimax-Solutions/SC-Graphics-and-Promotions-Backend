@@ -1,5 +1,6 @@
 package com.sc_graghics.sc_graphic.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,9 @@ public class Product {
     private String category;
     private String subcategory;
     private Double price;
+    @Size(max = 65535)
     private String description;
+    @Size(max = 65535)
     private String darazLink;
     private int clickCount;
     @ElementCollection
