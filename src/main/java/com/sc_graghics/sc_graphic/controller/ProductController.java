@@ -68,9 +68,10 @@ public class ProductController {
     public ResponseEntity<ProductDto> updateProduct(
             @PathVariable Integer id,
             @RequestPart("product") String productJson,
-            @RequestPart("image") MultipartFile imageFile) throws JsonProcessingException {
+            @RequestPart(value = "img", required = false) MultipartFile imageFile) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
+        System.out.println(productDto);
         productDto.setId(id);
         productService.update(productDto, imageFile);
         return ResponseEntity.ok(productDto);
