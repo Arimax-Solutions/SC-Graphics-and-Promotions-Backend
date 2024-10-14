@@ -65,6 +65,10 @@ public class ProductServiceIMPL implements ProductService {
             }
             existingProduct.setDescription(product.getDescription());
             existingProduct.setDetails(product.getDetails());
+            existingProduct.setPrice(product.getPrice());
+            existingProduct.setCategory(product.getCategory());
+            existingProduct.setSubcategory(product.getSubcategory());
+            existingProduct.setDarazLink(product.getDarazLink());
             productRepository.save(existingProduct);
         }
     }

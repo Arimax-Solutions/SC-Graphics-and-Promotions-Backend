@@ -77,7 +77,7 @@ public class AuthenticationController {
                 new StandardResponse(200, "User Deleted", null), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StandardResponse> getAllUsers() {
         return new ResponseEntity<>(
